@@ -1,0 +1,41 @@
+﻿<UserControl
+    x:Class="IndoorNavigationApp.Controls.MapPresenterControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:IndoorNavigationApp.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    
+    <ScrollViewer
+        x:Name="scrollViewer" 
+        ZoomMode="Enabled"
+        HorizontalScrollBarVisibility="Visible">
+        <Grid>
+            <Border Background="White">
+                <Image Width="{x:Bind Map.Size.Width}" Height="{x:Bind Map.Size.Height}">
+                    <Image.Source>
+                        <BitmapImage UriSource="{x:Bind Map.LowResolutionMapUri}"/>
+                    </Image.Source>
+                </Image>
+            </Border>
+            <Canvas x:Name="tileCanvas"/>
+            <Canvas x:Name="nodeCanvas"/>
+            <Canvas x:Name="canvas">
+                <controls:MapElementAdorner
+                    x:Name="mePoiControl"
+                    ZoomFactor="{x:Bind scrollViewer.ZoomFactor, Mode=OneWay}"
+                    Opacity="0">
+                    <controls:MapElementAdorner.Transitions>
+                        <TransitionCollection>
+                            <RepositionThemeTransition/>
+                        </TransitionCollection>
+                    </controls:MapElementAdorner.Transitions>
+                    <controls:MePoiControl/>
+                </controls:MapElementAdorner>
+            </Canvas>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
