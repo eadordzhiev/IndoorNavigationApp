@@ -14,7 +14,9 @@
 
         public PointU Position { get; }
 
-        public Node(int id, string title, string description, BeaconData beaconData, NodeType type, PointU position)
+        public int NavigationId { get; }
+
+        public Node(int id, string title, string description, BeaconData beaconData, NodeType type, PointU position, int navigationId)
         {
             Id = id;
             Title = title;
@@ -22,6 +24,7 @@
             BeaconData = beaconData;
             Type = type;
             Position = position;
+            NavigationId = navigationId;
         }
     }
 }

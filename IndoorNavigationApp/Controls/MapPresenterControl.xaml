@@ -22,6 +22,7 @@
                 </Image>
             </Border>
             <Canvas x:Name="tileCanvas"/>
+            <Canvas x:Name="routeCanvas"/>
             <Canvas x:Name="nodeCanvas"/>
             <Canvas x:Name="canvas">
                 <controls:MapElementAdorner

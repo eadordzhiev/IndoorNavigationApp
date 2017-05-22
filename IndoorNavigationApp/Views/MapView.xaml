@@ -22,7 +22,8 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <controls:MapPresenterControl 
             Map="{x:Bind VM.Map, Mode=OneWay}"
-            CurrentLocation="{x:Bind VM.CurrentLocation, Mode=OneWay}"/>
+            CurrentLocation="{x:Bind VM.CurrentLocation, Mode=OneWay}"
+            RouteSegments="{x:Bind VM.RouteSegments, Mode=OneWay}"/>
 
         <CommandBar VerticalAlignment="Bottom">
             <CommandBar.Background>

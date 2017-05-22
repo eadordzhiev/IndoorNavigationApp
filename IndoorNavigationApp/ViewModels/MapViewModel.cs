@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Windows.Devices.Sensors;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight;
 using IndoorNavigationApp.Beacon;
 using IndoorNavigationApp.Models;
+using IndoorNavigationApp.Service;
 
 namespace IndoorNavigationApp.ViewModels
 {
@@ -51,6 +56,18 @@ namespace IndoorNavigationApp.ViewModels
             }
         }
 
+        public IReadOnlyList<RouteSegment> RouteSegments
+        {
+            get { return _routeSegments; }
+            set
+            {
+                _routeSegments = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private IReadOnlyList<RouteSegment> _routeSegments;
+
         public bool IsLoading
         {
             get { return _isLoading; }
@@ -63,6 +80,7 @@ namespace IndoorNavigationApp.ViewModels
         
         private readonly IBeaconWatcher _beaconWatcher;
         private readonly IBeaconGeolocator _beaconGeolocator;
+        private readonly IMapServiceClient _mapServiceClient;
         private readonly Compass _compass;
         private readonly DispatcherTimer _compassTimer;
         private Map _map;
@@ -71,10 +89,11 @@ namespace IndoorNavigationApp.ViewModels
         private bool _isCompassDataAvailable;
         private bool _isLoading;
 
-        public MapViewModel(IBeaconWatcher beaconWatcher, IBeaconGeolocator beaconGeolocator)
+        public MapViewModel(IBeaconWatcher beaconWatcher, IBeaconGeolocator beaconGeolocator, IMapServiceClient mapServiceClient)
         {
             _beaconWatcher = beaconWatcher;
             _beaconGeolocator = beaconGeolocator;
+            _mapServiceClient = mapServiceClient;
 
             _compass = Compass.GetDefault();
 
@@ -82,7 +101,7 @@ namespace IndoorNavigationApp.ViewModels
             _compassTimer.Tick += _compassTimer_Tick;
         }
 
-        public void OnNavigatedTo(NavigationEventArgs e)
+        public async void OnNavigatedTo(NavigationEventArgs e)
         {
             _beaconWatcher.NearestBeaconChanged += NearestBeaconChangedHandler;
             _beaconWatcher.Start();
@@ -105,6 +124,11 @@ namespace IndoorNavigationApp.ViewModels
                 _compass.ReportInterval = 30;
                 _compassTimer.Start();
             }
+
+            var building = await _mapServiceClient.GetBuildingByBuildingIdAsync(2);
+            var nodes = building.Maps.SelectMany(x => x.Nodes).ToImmutableDictionary(x => x.NavigationId);
+
+            RouteSegments = _beaconGeolocator.MakeRoute(building, nodes[68], nodes[60]).ToArray();
         }
 
         public void OnNavigatedFrom(NavigationEventArgs e)

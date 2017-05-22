@@ -15,13 +15,16 @@ namespace IndoorNavigationApp.Models
 
         public Address Address { get; }
 
-        public Building(int id, string name, Uri heroImageUri, IReadOnlyList<Map> maps, Address address)
+        public int[,] AdjacencyMatrix { get; }
+
+        public Building(int id, string name, Uri heroImageUri, IReadOnlyList<Map> maps, Address address, int[,] adjacencyMatrix)
         {
             Id = id;
             Name = name;
             HeroImageUri = heroImageUri;
             Maps = maps;
             Address = address;
+            AdjacencyMatrix = adjacencyMatrix;
         }
     }
 }

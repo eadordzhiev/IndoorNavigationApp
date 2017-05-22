@@ -94,7 +94,7 @@ namespace IndoorNavigationApp.ViewModels
 
             try
             {
-                var building = await _mapServiceClient.GetBuildingDetailsAsync(buildingName.Id);
+                var building = await _mapServiceClient.GetBuildingByBuildingIdAsync(buildingName.Id);
 
                 Title = building.Name;
                 HeroImageUri = building.HeroImageUri;

@@ -89,6 +89,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="Assets\AdjacencyMatrices\strogino.txt" />
     <Content Include="Assets\CompassArrow.png" />
     <None Include="project.json" />
   </ItemGroup>
@@ -123,6 +124,7 @@
     <Compile Include="Models\PointU.cs" />
     <Compile Include="Models\SizeU.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Models\RouteSegment.cs" />
     <Compile Include="ViewModels\BuildingViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />

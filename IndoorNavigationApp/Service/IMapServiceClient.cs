@@ -7,7 +7,7 @@ namespace IndoorNavigationApp.Service
     public interface IMapServiceClient
     {
         Task<int?> GetBeaconIdByBeaconDataAsync(BeaconData beaconId);
-        Task<Building> GetBuildingDetailsAsync(int buildingId);
+        Task<Building> GetBuildingByBuildingIdAsync(int buildingId);
         Task<IReadOnlyList<BuildingName>> GetBuildingNamesAsync();
         Task<Map> GetMapByBeaconIdAsync(int beaconId);
         Task<Map> GetMapByIdAsync(int mapId);

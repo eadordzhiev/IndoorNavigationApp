@@ -1,9 +1,11 @@
-﻿using Windows.UI;
+﻿using System.Collections.Generic;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Shapes;
 using IndoorNavigationApp.Models;
 using IndoorNavigationApp.Service;
 using Microsoft.Toolkit.Uwp.UI.Animations;
@@ -20,9 +22,7 @@ namespace IndoorNavigationApp.Controls
         
         public static readonly DependencyProperty MapProperty =
             DependencyProperty.Register("Map", typeof(Map), typeof(MapPresenterControl), new PropertyMetadata(null, MapChangedCallback));
-
-
-
+        
         public PointU? CurrentLocation
         {
             get { return (PointU?)GetValue(CurrentLocationProperty); }
@@ -32,6 +32,48 @@ namespace IndoorNavigationApp.Controls
         // Using a DependencyProperty as the backing store for CurrentLocation.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CurrentLocationProperty =
             DependencyProperty.Register("CurrentLocation", typeof(PointU?), typeof(MapPresenterControl), new PropertyMetadata(null, CurrentLocationChangedCallback));
+
+
+
+        public IReadOnlyList<RouteSegment> RouteSegments
+        {
+            get { return (IReadOnlyList<RouteSegment>)GetValue(RouteSegmentsProperty); }
+            set { SetValue(RouteSegmentsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for RouteSegments.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RouteSegmentsProperty =
+            DependencyProperty.Register("RouteSegments", typeof(IReadOnlyList<RouteSegment>), typeof(MapPresenterControl), new PropertyMetadata(null, RouteSegmentsChangedCallback));
+
+        private static void RouteSegmentsChangedCallback(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            var mapPresenter = (MapPresenterControl)sender;
+            mapPresenter.OnRouteSegmentsChanged(sender, args);
+        }
+
+        private void OnRouteSegmentsChanged(object sender, object args)
+        {
+            routeCanvas.Children.Clear();
+            if (RouteSegments == null)
+            {
+                return;
+            }
+
+            foreach (var routeSegment in RouteSegments)
+            {
+                var line = new Line()
+                {
+                    X1 = routeSegment.StartingNode.Position.X,
+                    Y1 = routeSegment.StartingNode.Position.Y,
+                    X2 = routeSegment.EndingNode.Position.X,
+                    Y2 = routeSegment.EndingNode.Position.Y,
+                    StrokeThickness = 3,
+                    Stroke = new SolidColorBrush(Colors.Blue)
+                };
+                routeCanvas.Children.Add(line);
+            }
+        }
+
 
         private static void CurrentLocationChangedCallback(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
