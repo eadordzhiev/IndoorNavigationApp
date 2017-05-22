@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using GalaSoft.MvvmLight.Command;
 using IndoorNavigationApp.Models;
 
 namespace IndoorNavigationApp.Controls
@@ -15,7 +17,23 @@ namespace IndoorNavigationApp.Controls
         
         public static readonly DependencyProperty NodeProperty =
             DependencyProperty.Register("Node", typeof(Node), typeof(MapNodeControl), new PropertyMetadata(null, NodeChangedCallback));
-        
+
+
+
+
+        public ICommand Command
+        {
+            get { return (ICommand)GetValue(CommandProperty); }
+            set { SetValue(CommandProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Command.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CommandProperty =
+            DependencyProperty.Register("Command", typeof(ICommand), typeof(MapNodeControl), new PropertyMetadata(null));
+
+
+
+
         public MapNodeControl()
         {
             InitializeComponent();
@@ -71,6 +89,14 @@ namespace IndoorNavigationApp.Controls
             }
 
             imagePresenter.UriSource = new Uri($"ms-appx:/Assets/NodeIcons/{iconName}");
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (Command != null)
+            {
+                Command.Execute(Node);
+            }
         }
     }
 }

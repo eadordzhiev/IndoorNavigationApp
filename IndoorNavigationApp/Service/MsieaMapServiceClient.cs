@@ -118,7 +118,8 @@ namespace IndoorNavigationApp.Service
                     major: beaconDto.Major,
                     minor: beaconDto.Minor), 
                 type: nodeType,
-                position: new PointU(beaconDto.CoordX, beaconDto.CoordY));
+                position: new PointU(beaconDto.CoordX, beaconDto.CoordY),
+                adjacencyMatrixId: beaconDto.NodeNumber);
         }
 
         private Node GetNodeFromNodeDto(NodeDto nodeDto)
@@ -129,7 +130,8 @@ namespace IndoorNavigationApp.Service
                 description: null,
                 beaconData: null,
                 type: NodeType.NavHint,
-                position: new PointU(nodeDto.CoordX, nodeDto.CoordY));
+                position: new PointU(nodeDto.CoordX, nodeDto.CoordY),
+                adjacencyMatrixId: nodeDto.NodeNumber);
         }
 
         private Map GetMapFromMapDetailsDto(MapDetailsDto mapDetailsDto)

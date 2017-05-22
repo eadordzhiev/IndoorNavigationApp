@@ -1,12 +1,16 @@
-﻿using Windows.UI;
+﻿using System.Collections.Generic;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Shapes;
+using GalaSoft.MvvmLight.Command;
 using IndoorNavigationApp.Models;
 using IndoorNavigationApp.Service;
 using Microsoft.Toolkit.Uwp.UI.Animations;
+using Newtonsoft.Json;
 
 namespace IndoorNavigationApp.Controls
 {
@@ -89,6 +93,7 @@ namespace IndoorNavigationApp.Controls
             {
                 var nodeView = new MapNodeControl();
                 nodeView.Node = node;
+                nodeView.Command = new RelayCommand<Node>(NodeClicked);
                 
                 var nodeViewWrapper = new MapElementAdorner();
                 nodeViewWrapper.Child = nodeView;
@@ -98,6 +103,35 @@ namespace IndoorNavigationApp.Controls
                 
                 nodeCanvas.Children.Add(nodeViewWrapper);
             }
+        }
+
+        private Node startingNode;
+        private List<int[]> edges = new List<int[]>();
+
+        private void NodeClicked(Node node)
+        {
+            if (startingNode == null)
+            {
+                startingNode = node;
+                return;
+            }
+
+            edges.Add(new int[]{startingNode.AdjacencyMatrixId, node.AdjacencyMatrixId});
+            var line = new Line();
+            line.X1 = startingNode.Position.X;
+            line.Y1 = startingNode.Position.Y;
+            line.X2 = node.Position.X;
+            line.Y2 = node.Position.Y;
+            line.Stroke = new SolidColorBrush(Colors.Blue);
+            line.StrokeThickness = 3;
+            routeCanvas.Children.Add(line);
+
+            startingNode = null;
+        }
+
+        string dumpEdges()
+        {
+            return JsonConvert.SerializeObject(edges);
         }
 
         private void CreateTiles(ITileProvider tileProvider)

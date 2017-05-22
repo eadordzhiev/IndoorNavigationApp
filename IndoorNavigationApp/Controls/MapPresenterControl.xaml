@@ -12,7 +12,8 @@
     <ScrollViewer
         x:Name="scrollViewer" 
         ZoomMode="Enabled"
-        HorizontalScrollBarVisibility="Visible">
+        HorizontalScrollBarVisibility="Visible"
+        VerticalScrollBarVisibility="Visible">
         <Grid>
             <Border Background="White">
                 <Image Width="{x:Bind Map.Size.Width}" Height="{x:Bind Map.Size.Height}">
@@ -23,7 +24,8 @@
             </Border>
             <Canvas x:Name="tileCanvas"/>
             <Canvas x:Name="nodeCanvas"/>
-            <Canvas x:Name="canvas">
+            <Canvas x:Name="routeCanvas"/>
+            <Canvas>
                 <controls:MapElementAdorner
                     x:Name="mePoiControl"
                     ZoomFactor="{x:Bind scrollViewer.ZoomFactor, Mode=OneWay}"

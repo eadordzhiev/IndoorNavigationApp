@@ -19,13 +19,13 @@
         </Style>
     </UserControl.Resources>
     
-    <Button Style="{StaticResource MapNodeButtonStyle}">
+    <Button Click="ButtonBase_OnClick" Style="{StaticResource MapNodeButtonStyle}">
         <Grid>
             <TextBlock x:Name="textPresenter" FontSize="24" Foreground="{ThemeResource SystemControlForegroundAccentBrush}"/>
             <BitmapIcon x:Name="imagePresenter" Width="32" Height="32" Foreground="{ThemeResource SystemControlForegroundAccentBrush}"/>
             <Ellipse x:Name="navHintEllipse" Width="32" Height="32" Stroke="{ThemeResource SystemControlForegroundAccentBrush}" StrokeThickness="3" Visibility="Collapsed"/>
         </Grid>
-        <Button.Flyout>
+        <!--<Button.Flyout>
             <Flyout>
                 <TextBlock>
                     <Run>Description:</Run>
@@ -41,7 +41,7 @@
                     <Run Text="{x:Bind Node.BeaconData.Minor}"/>
                 </TextBlock>
             </Flyout>
-        </Button.Flyout>
+        </Button.Flyout>-->
     </Button>
     
 </UserControl>
